@@ -1,0 +1,81 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv='X-UA-Compatible' content='IE=edge;chrome=1' />
+  <title>Weston Selleck</title>
+  <link rel="icon" href="/favicon.png">
+  <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/stylesheets/reset.css">
+  <link rel="stylesheet" href="/stylesheets/foundation.min.css">
+  <link rel="stylesheet" href="/stylesheets/global.css">
+  <link rel="stylesheet" href="/css/style.css">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,500,600,700,800,900' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300, 400, 700,900,300italic,400italic,700italic,900italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
+  
+
+</head>
+
+<body>
+<section class="header">
+  <div class="container">
+    <a href="/">
+    <span id="weston">
+    Weston Selleck
+    </span>
+    </a>
+    <div class="nav">
+      <ul class="nav-links">
+        <li class="nav-item">
+          <a href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="/projects">Projects</a>
+        </li>
+        <li class="nav-item">
+          <a href="/blog">Blog</a>
+        </li>
+        <li class="nav-item">
+          <a href="/misc">Misc</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="main">
+<div class="container">
+<div class="basic-page-content">
+ <div class="blog-post">
+  <header class="blog-post-header">
+      <div class="blog-post-title">Automatically Syncing Taskwarrior on OSX with launchd</div>
+      <div class="blog-post-meta">Fri Apr 01 2016 23:00:00 GMT-0500</div>
+  </header>
+  <article class="post-content">
+    <p>You have a sweet Taskwarrior server setup so you can sync your tasks between your multiple machines, but sometimes after a long day at work/school/lying around doing nothing, you just forget to run <code>task sync</code> before leaving. One of the obvious solutions to this is to set up a cron job to automatically run <code>task sync</code> every so minutes, but this is a problem on OSX since Apple has deprecated cron in favor of launchd. There is still some magical voodoo you can perform to get cron to work, but, after performing an extensive 5 minute research, I couldn’t get a straight, clear answer as to how to do it, so I just gave up and set up a launchd job. To get started, create a file in <code>~/Library/LaunchAgents</code> and open it up in a text editor.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">touch ~/Library/LaunchAgents/taskwarriorsync.plist</div><div class="line">vim ~/Library/LaunchAgents/taskwarriorsync.plist</div></pre></td></tr></table></figure>
+<p>Here is the entire contents of my <code>taskwarriorsync.plist</code></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</div><div class="line"><span class="meta">&lt;!DOCTYPE plist PUBLIC "-//Apple/DTD PLIST 1.0//EN"</span></div><div class="line">  "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</div><div class="line"><span class="tag">&lt;<span class="name">plist</span> <span class="attr">version</span>=<span class="string">"1.0"</span>&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">dict</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="name">key</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>taskwarriorsync<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>Program<span class="tag">&lt;/<span class="name">key</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">string</span>&gt;</span>/usr/local/bin/task<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="name">key</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">array</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">string</span>&gt;</span>sync<span class="tag">&lt;/<span class="name">string</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">array</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">key</span>&gt;</span>StartCalendarInterval<span class="tag">&lt;/<span class="name">key</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">dict</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">key</span>&gt;</span>Minute<span class="tag">&lt;/<span class="name">key</span>&gt;</span></div><div class="line">        <span class="tag">&lt;<span class="name">integer</span>&gt;</span>56<span class="tag">&lt;/<span class="name">integer</span>&gt;</span></div><div class="line">    <span class="tag">&lt;/<span class="name">dict</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">dict</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">plist</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>The really important parts here are the Program, ProgramArguments, and StartCalendarInterval fields.</p>
+<ol>
+<li><p>Program - Simply the program you want to run. You can set up an environment path in the .plist file to execute in so you don’t have to type in the absolute path of the command, but that seemed like overkill for this small job. If you’re not sure where your <code>task</code> command is located exactly, just run <code>which task</code> in your terminal and paste that here.</p>
+</li>
+<li><p>Program Arguments - Command line arguments to give to <code>task</code>. In this case we want to run <code>task sync</code>, so we just provide <code>sync</code> as the sole argument.</p>
+</li>
+<li><p>StartCalendarInterval - This describes how often the job is executed. I’m only using the Minute field since I want this task to run every hour at the 56th minute (00:56, 01:56, … 23:56), but there are many more fields you can use that are documented <a href="http://launchd.info/" target="_blank" rel="external">here</a>.</p>
+</li>
+</ol>
+<p>Just save the file and you’re done, your job with load on the next reboot. In case you just can’t wait for all the fun, you can manually load the job by running</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">launchctl load ~/Library/LaunchAgents/taskwarriorsync.plist</div></pre></td></tr></table></figure>
+<p>You can then run this to make sure it worked.</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">launchctl list | grep taskwarriorsync</div></pre></td></tr></table></figure>
+
+  </article>
+</div>
+
+
+</div>
+</div>
+</section>
+</body>
+</html>
